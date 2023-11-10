@@ -12,7 +12,7 @@ export function Header() {
   return(
     <header className="w-full max-w-2xl mt-10 px-1" >
       <nav className="flex items-center justify-between">
-        <div className="flex gap-7 text-white text-base font-medium">
+        <div className="flex gap-7 text-white/80 text-base font-medium">
           <Link to='/'>Home</Link>
           <Link to='/social-media'>Social Media</Link>
         </div>

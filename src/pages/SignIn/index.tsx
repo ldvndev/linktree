@@ -25,9 +25,9 @@ export function SignIn() {
   return (
     <main className="flex w-full h-screen items-center justify-center flex-col">
       <Link to="/">
-        <h1 className="mt-11 mb-7 text-gray-200 font-bold text-5xl">
+        <h1 className="mt-11 mb-7 text-gray-200/70 font-bold text-5xl">
           Sign
-          <span className="bg-gradient-to-r from-purple-800 to-purple-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-purple-800 to-purple-600/40 bg-clip-text text-transparent">
             In
           </span>
         </h1>
