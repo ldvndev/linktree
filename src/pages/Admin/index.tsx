@@ -72,8 +72,17 @@ export function Admin() {
       color: textColor,
       created: new Date(),
     });
+
+    setNameLinkInput('');
+    setUrl('');
   }
-  
+
+  async function handleDeleteLink(id: string) {
+    const deleteLink = doc(dataBase, 'links', id);
+
+    await deleteDoc(deleteLink);
+  }
+
   return (
     <main className="flex items-center flex-col min-h-screen pb-7 px-2">
       <Header />
@@ -151,7 +160,7 @@ export function Admin() {
         >
           <p>{link.name}</p>
           <div>
-            <button>
+            <button onClick={() => handleDeleteLink(link.id)}>
               <FiTrash size={25} color="rgb(192 132 252)" />
             </button>
           </div>
