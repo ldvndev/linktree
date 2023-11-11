@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { FiTrash } from 'react-icons/fi';
 
 import { dataBase } from '../../services/firebase';
@@ -16,14 +16,48 @@ import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { RegisterButton } from '../../components/RegisterButton';
 
+interface LinksProps {
+  id: string;
+  name: string;
+  url: string;
+  background: string;
+  color: string;
+}
+
 export function Admin() {
   const [nameLinkInput, setNameLinkInput] = useState('');
   const [url, setUrl] = useState('');
   const [backgroundColorInput, setBackgroundColorInput] =
     useState('rgb(39 39 42)');
   const [textColor, setTextColor] = useState('#f1f1f1');
+  const [links, setLinks] = useState<LinksProps[]>([]);
 
-  function handleRegisterLinks(event: FormEvent) {
+  useEffect(() => {
+    const links = collection(dataBase, 'links');
+    const searchCustom = query(links, orderBy('created', 'asc'));
+
+    const unsubscribe = onSnapshot(searchCustom, snapshot => {
+      const list = [] as LinksProps[];
+
+      snapshot.forEach(document => {
+        list.push({
+          id: document.id,
+          name: document.data().name,
+          url: document.data().url,
+          background: document.data().background,
+          color: document.data().color,
+        });
+      });
+
+      setLinks(list);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  async function handleRegisterLinks(event: FormEvent) {
     event.preventDefault();
 
     if (nameLinkInput === '' || url === '') {
@@ -31,19 +65,15 @@ export function Admin() {
       return;
     }
 
-    addDoc(collection(dataBase, 'links'), {
+    await addDoc(collection(dataBase, 'links'), {
       name: nameLinkInput,
       url: url,
       background: backgroundColorInput,
       color: textColor,
       created: new Date(),
-    })
-      .then(() => console.log('Cadastrado com sucesso'))
-      .catch(error => {
-        console.log('error: ', error);
-      });
+    });
   }
-
+  
   return (
     <main className="flex items-center flex-col min-h-screen pb-7 px-2">
       <Header />
@@ -111,19 +141,22 @@ export function Admin() {
         <RegisterButton type="submit" />
       </form>
 
-      <h2 className="mt-10">My Links 👇</h2>
+      <h2 className="mb-10 mt-10">My Links 👇</h2>
 
-      <article
-        className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-3 mb-2 select-none"
-        style={{ backgroundColor: 'rgb(39 39 42 / 0.5)', color: '#ccc' }}
-      >
-        <p>Channel Youtube</p>
-        <div>
-          <button>
-            <FiTrash size={25} color="rgb(192 132 252)" />
-          </button>
-        </div>
-      </article>
+      {links.map(link => (
+        <article
+          key={link.id}
+          className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-3 mb-2 select-none"
+          style={{ backgroundColor: link.background, color: link.color }}
+        >
+          <p>{link.name}</p>
+          <div>
+            <button>
+              <FiTrash size={25} color="rgb(192 132 252)" />
+            </button>
+          </div>
+        </article>
+      ))}
     </main>
   );
 }
