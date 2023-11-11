@@ -10,11 +10,11 @@ async function handleLogout() {
 
 export function Header() {
   return (
-    <header className="w-full max-w-2xl mt-10 px-1">
+    <header className="w-full max-w-2xl mt-12 mb-8 px-1">
       <nav className="flex items-center justify-between">
-        <div className="flex gap-7 text-white/80 text-base font-medium">
-          <Link to="/">Home</Link>
-          <Link to="/social-media">
+        <div className="flex gap-7 text-purple-400  text-base">
+          <Link className="hover:text-purple-500" to="/">Home</Link>
+          <Link className="hover:text-purple-500" to="/social-media">
             Social Media
           </Link>
         </div>
