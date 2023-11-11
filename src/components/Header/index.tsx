@@ -14,7 +14,9 @@ export function Header() {
       <nav className="flex items-center justify-between">
         <div className="flex gap-7 text-white/80 text-base font-medium">
           <Link to="/">Home</Link>
-          <Link to="/social-media">Social Media</Link>
+          <Link to="/social-media">
+            Social Media
+          </Link>
         </div>
 
         <button onClick={handleLogout}>

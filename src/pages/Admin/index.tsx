@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { FiTrash } from 'react-icons/fi';
+
+import { dataBase } from '../../services/firebase';
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { RegisterButton } from '../../components/RegisterButton';
-
-import { FiTrash } from 'react-icons/fi';
 
 export function Admin() {
   const [nameLinkInput, setNameLinkInput] = useState('');
@@ -13,16 +23,40 @@ export function Admin() {
     useState('rgb(39 39 42)');
   const [textColor, setTextColor] = useState('#f1f1f1');
 
+  function handleRegisterLinks(event: FormEvent) {
+    event.preventDefault();
+
+    if (nameLinkInput === '' || url === '') {
+      alert('Please inform the fields');
+      return;
+    }
+
+    addDoc(collection(dataBase, 'links'), {
+      name: nameLinkInput,
+      url: url,
+      background: backgroundColorInput,
+      color: textColor,
+      created: new Date(),
+    })
+      .then(() => console.log('Cadastrado com sucesso'))
+      .catch(error => {
+        console.log('error: ', error);
+      });
+  }
+
   return (
     <main className="flex items-center flex-col min-h-screen pb-7 px-2">
       <Header />
 
-      <form className="flex flex-col mt-4 mb-3 w-full max-w-xl">
+      <form
+        className="flex flex-col mt-4 mb-3 w-full max-w-xl"
+        onSubmit={handleRegisterLinks}
+      >
         <label className="text-white mt-2">Link Name</label>
         <InputField
           placeholder="Enter link name ..."
           value={nameLinkInput}
-          onChange={(event) => setNameLinkInput(event.target.value)}
+          onChange={event => setNameLinkInput(event.target.value)}
         />
 
         <label className="text-white mt-2">Link Url</label>
@@ -30,7 +64,7 @@ export function Admin() {
           type="url"
           placeholder="Enter url name ..."
           value={url}
-          onChange={(event) => setUrl(event.target.value)}
+          onChange={event => setUrl(event.target.value)}
         />
 
         <section className="flex my-4 gap-5">
@@ -39,7 +73,7 @@ export function Admin() {
             <input
               type="color"
               value={backgroundColorInput}
-              onChange={(event) => setBackgroundColorInput(event.target.value)}
+              onChange={event => setBackgroundColorInput(event.target.value)}
             />
           </div>
 
@@ -48,7 +82,7 @@ export function Admin() {
             <input
               type="color"
               value={textColor}
-              onChange={(event) => setTextColor(event.target.value)}
+              onChange={event => setTextColor(event.target.value)}
             />
           </div>
         </section>
