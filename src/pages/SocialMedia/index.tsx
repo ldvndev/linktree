@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 import { dataBase } from '../../services/firebase';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
@@ -23,6 +23,21 @@ export function SocialMedia() {
       urlInstragram,
     });
   }
+
+  useEffect(() => {
+    function dataLinks() {
+      const docReference = doc(dataBase, 'social', 'socialLinks');
+      getDoc(docReference).then(response => {
+        if (response.data() !== undefined) {
+          setUrlGithub(response.data()?.urlGithub);
+          setUrlLinkedin(response.data()?.urlLinkedin);
+          setUrlInstragram(response.data()?.urlInstragram);
+        }
+      });
+    }
+
+    dataLinks();
+  }, []);
 
   return (
     <main className="flex items-center flex-col min-h-screen pb-7 px-2">
