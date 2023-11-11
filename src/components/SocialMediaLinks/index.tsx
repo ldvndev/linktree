@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface SocialMediaLinksProps {
   url: string;
@@ -6,7 +6,7 @@ interface SocialMediaLinksProps {
 }
 
 export function SocialMediaLinks({ url, children }: SocialMediaLinksProps) {
-  return(
+  return (
     <a href={url} rel="noopener noreferrer" target="_blank">
       {children}
     </a>

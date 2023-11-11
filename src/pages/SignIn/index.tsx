@@ -1,27 +1,27 @@
-import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { authorization } from '../../services/firebase';
 
 import { InputField } from '../../components/InputField';
-import { SignInButton } from "../../components/SignInButton";
+import { SignInButton } from '../../components/SignInButton';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  function handleSubmitForm (event: FormEvent) {
-    event.preventDefault()
+  function handleSubmitForm(event: FormEvent) {
+    event.preventDefault();
 
     signInWithEmailAndPassword(authorization, email, password)
-      .then(() => navigate('/admin', { replace: true}))
-      .catch(error => {
-        console.log('error: ', error)
-      })
+      .then(() => navigate('/admin', { replace: true }))
+      .catch((error) => {
+        console.log('error: ', error);
+      });
   }
- 
+
   return (
     <main className="flex w-full h-screen items-center justify-center flex-col">
       <Link to="/">
@@ -33,23 +33,24 @@ export function SignIn() {
         </h1>
       </Link>
 
-      <form className="w-full max-w-lg flex flex-col px-2" onSubmit={handleSubmitForm}>
-        <InputField 
+      <form
+        className="w-full max-w-lg flex flex-col px-2"
+        onSubmit={handleSubmitForm}
+      >
+        <InputField
           placeholder="E-mail"
           type="email"
           value={email}
-          onChange={event => setEmail(event.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
         />
 
-        <InputField 
+        <InputField
           placeholder="Password"
           type="password"
           value={password}
-          onChange={event => setPassword(event.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
         />
-        <SignInButton 
-          type="submit"
-        />
+        <SignInButton type="submit" />
       </form>
     </main>
   );
