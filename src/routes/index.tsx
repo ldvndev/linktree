@@ -5,6 +5,7 @@ import { SignIn } from '../pages/SignIn';
 import { Admin } from '../pages/Admin';
 import { SocialMedia } from '../pages/SocialMedia';
 import { Private } from './Private';
+import NotFound from '../pages/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -23,4 +24,8 @@ export const router = createBrowserRouter([
     element: <Private> <Admin /> </Private>,
     path: '/admin',
   },
+  {
+    path: '*',
+    element: <NotFound />
+  }
 ])
