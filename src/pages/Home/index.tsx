@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaInstagram, FaLinkedin, FaUser } from 'react-icons/fa';
+import { FiLogIn } from 'react-icons/fi';
 import { dataBase } from '../../services/firebase';
 import {
   getDocs,
@@ -10,6 +11,7 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { SocialMediaLinks } from '../../components/SocialMediaLinks';
+import { Link } from 'react-router-dom';
 
 interface LinksProps {
   id: string;
@@ -70,60 +72,76 @@ export function Home() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center flex-col w-full py-4 ">
-      <h1 className="md:text-4xl font-bold text-gray-100 mt-20 text-2xl">
-        @ldvndev | Leonardo Rodrigues
-      </h1>
-      <span className="text-gray-200 mb-5 mt-3 text-base">
-        👇 Veja meus links!
-      </span>
-
-      <main className="flex flex-col w-11/12 max-w-xl text-center mt-3">
-        {links.map(link => (
-          <section
-            style={{ backgroundColor: link.background }}
-            className="bg-zinc-800 mb-4 w-full py-2 rounded-lg select-none transition-transform hover:scale-105 cursor-pointer"
-            key={link.id}
+    <>
+      <header className="h-20">
+        <div className="max-w-7xl h-20 px-8 flex items-center justify-end">
+          <Link
+            className="h-12 px-6 flex items-center justify-center text-violet-500 hover:text-violet-600 text-base font-medium gap-3"
+            to="/sign-in"
           >
-            <a href={link.url} target="_blank">
-              <p
-                className="text-gray-200 text-base md:text-lg"
-                style={{ color: link.color }}
-              >
-                {link.name}
-              </p>
-            </a>
-          </section>
-        ))}
-      </main>
+            Admin <FaUser />
+          </Link>
+          <Link
+            className="h-12 px-6 flex items-center justify-center text-violet-500 hover:text-violet-600 text-base font-medium gap-3"
+            to="/sign-in"
+          >
+            Sign In <FiLogIn />
+          </Link>
+        </div>
+      </header>
 
-      {socialLinks && Object.keys(socialLinks).length > 0 && (
-        <footer className="flex justify-center gap-3 my-4">
-          <SocialMediaLinks url={socialLinks?.github}>
-            <FaGithub
-              className="transition-transform hover:fill-slate-300"
-              size={35}
-              color="#d1d5db"
-            />
-          </SocialMediaLinks>
+      <div className="flex items-center justify-center flex-col w-full py-4 ">
+        <span className="text-gray-200 mb-5 mt-3 text-base">
+          👇 Veja meus links!
+        </span>
 
-          <SocialMediaLinks url={socialLinks?.linkedin}>
-            <FaLinkedin
-              className="transition-transform hover:fill-slate-300"
-              size={35}
-              color="#d1d5db"
-            />
-          </SocialMediaLinks>
+        <main className="flex flex-col w-11/12 max-w-xl text-center mt-3">
+          {links.map(link => (
+            <section
+              style={{ backgroundColor: link.background }}
+              className="bg-zinc-800 mb-4 w-full py-2 rounded-lg select-none transition-transform hover:scale-105 cursor-pointer"
+              key={link.id}
+            >
+              <a href={link.url} target="_blank">
+                <p
+                  className="text-gray-200 text-base md:text-lg"
+                  style={{ color: link.color }}
+                >
+                  {link.name}
+                </p>
+              </a>
+            </section>
+          ))}
+        </main>
 
-          <SocialMediaLinks url={socialLinks?.instagram}>
-            <FaInstagram
-              className="transition-transform hover:fill-slate-300"
-              size={35}
-              color="#d1d5db"
-            />
-          </SocialMediaLinks>
-        </footer>
-      )}
-    </div>
+        {socialLinks && Object.keys(socialLinks).length > 0 && (
+          <footer className="flex justify-center gap-3 my-4">
+            <SocialMediaLinks url={socialLinks?.github}>
+              <FaGithub
+                className="transition-transform hover:fill-slate-300"
+                size={35}
+                color="#d1d5db"
+              />
+            </SocialMediaLinks>
+
+            <SocialMediaLinks url={socialLinks?.linkedin}>
+              <FaLinkedin
+                className="transition-transform hover:fill-slate-300"
+                size={35}
+                color="#d1d5db"
+              />
+            </SocialMediaLinks>
+
+            <SocialMediaLinks url={socialLinks?.instagram}>
+              <FaInstagram
+                className="transition-transform hover:fill-slate-300"
+                size={35}
+                color="#d1d5db"
+              />
+            </SocialMediaLinks>
+          </footer>
+        )}
+      </div>
+    </>
   );
 }
